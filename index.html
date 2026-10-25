@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta name="theme-color" content="#ffb6cf" />
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E💗%3C/text%3E%3C/svg%3E" />
+<title>❤ 我们的恋爱时光</title>
+<style>
+  :root {
+    --pink: #ff6b9d;
+    --pink-deep: #e84a8a;
+    --pink-soft: #ffd6e5;
+    --text: #7a3b55;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "Helvetica Neue", sans-serif;
+    background: linear-gradient(180deg, #ffdce8, #fff8fa 65%);
+    color: var(--text);
+    overflow-x: hidden;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  /* ---- 背景星星 ---- */
+  #stars { position: fixed; inset: 0; pointer-events: none; z-index: 0; }
+  .star {
+    position: absolute;
+    top: -12px;
+    border-radius: 50%;
+    background: #fff;
+    box-shadow: 0 0 8px 2px rgba(255, 107, 157, 0.55);
+    animation: starFall linear infinite, starTwinkle ease-in-out infinite alternate;
+  }
+  @keyframes starFall {
+    from { transform: translate3d(0, -12px, 0); }
+    to   { transform: translate3d(-36px, 108vh, 0); }
+  }
+  @keyframes starTwinkle {
+    from { opacity: 0.45; }
+    to   { opacity: 1; }
+  }
+
+  .wrap { position: relative; z-index: 1; max-width: 960px; margin: 0 auto; padding: 24px 16px 44px; }
+
+  /* ---- 顶部：标题 + 倒计时 ---- */
+  .hero { text-align: center; padding: 28px 12px 18px; }
+  .hero h1 {
+    font-size: clamp(1.6rem, 6vw, 2.3rem);
+    color: var(--pink-deep);
+    letter-spacing: 2px;
+  }
+  .heart-beat { display: inline-block; animation: beat 1.4s ease-in-out infinite; }
+  @keyframes beat {
+    0%, 100% { transform: scale(1); }
+    25%      { transform: scale(1.18); }
+    45%      { transform: scale(1); }
+  }
+  .since-line { margin-top: 8px; font-size: 0.95rem; opacity: 0.85; }
+
+  .countdown {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
+    margin: 22px auto 0;
+    max-width: 560px;
+  }
+  .countdown .unit {
+    background: rgba(255, 255, 255, 0.85);
+    backdrop-filter: blur(4px);
+    border-radius: 18px;
+    padding: 14px 4px 12px;
+    box-shadow: 0 8px 24px rgba(255, 107, 157, 0.18);
+  }
+  .countdown .num {
+    font-size: clamp(1.5rem, 8vw, 2.6rem);
+    font-weight: 700;
+    color: var(--pink);
+    line-height: 1.1;
+    font-variant-numeric: tabular-nums;
+  }
+  .countdown .lab {
+    display: block;
+    margin-top: 6px;
+    font-size: 0.8rem;
+    letter-spacing: 2px;
+    opacity: 0.7;
+  }
+  .count-note { margin-top: 16px; font-size: 0.9rem; opacity: 0.8; }
+
+  /* ---- 通用小标题 ---- */
+  .section { margin-top: 44px; }
+  .section h2 {
+    text-align: center;
+    font-size: clamp(1.25rem, 5vw, 1.6rem);
+    color: var(--pink-deep);
+    letter-spacing: 3px;
+  }
+  .section h2::after {
+    content: "";
+    display: block;
+    width: 46px;
+    height: 3px;
+    margin: 10px auto 0;
+    border-radius: 2px;
+    background: linear-gradient(90deg, var(--pink-soft), var(--pink));
+  }
+
+  /* ---- 照片墙 ---- */
+  .photo-wall {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 14px;
+    margin: 20px auto 0;
+    max-width: 780px;
+  }
+  .photo {
+    position: relative;
+    aspect-ratio: 1 / 1;
+    border-radius: 16px;
+    overflow: hidden;
+    cursor: zoom-in;
+    background: var(--pink-soft);
+    box-shadow: 0 6px 18px rgba(255, 107, 157, 0.15);
+    transition: transform 0.35s ease, box-shadow 0.35s ease;
+  }
+  .photo img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: transform 0.55s ease;
+  }
+  .photo:hover { transform: translateY(-4px); box-shadow: 0 14px 30px rgba(255, 107, 157, 0.3); }
+  .photo:hover img { transform: scale(1.12); }
+
+  /* ---- 情话 ---- */
+  .love-letter {
+    position: relative;
+    background: rgba(255, 255, 255, 0.9);
+    border: 1px solid var(--pink-soft);
+    border-radius: 22px;
+    padding: 28px 24px;
+    margin-top: 24px;
+    box-shadow: 0 10px 30px rgba(255, 107, 157, 0.14);
+  }
+  .love-letter::before {
+    content: "❝";
+    position: absolute;
+    top: 6px;
+    left: 16px;
+    font-size: 3rem;
+    color: var(--pink-soft);
+    line-height: 1;
+  }
+  .love-letter p {
+    font-size: clamp(0.98rem, 3.5vw, 1.08rem);
+    line-height: 2;
+    text-indent: 2em;
+    color: #8a4a63;
+  }
+  .love-letter .sign { text-align: right; margin-top: 14px; text-indent: 0; opacity: 0.85; }
+
+  footer {
+    text-align: center;
+    margin-top: 48px;
+    font-size: 0.85rem;
+    letter-spacing: 1px;
+    opacity: 0.7;
+  }
+
+  /* ---- 点击看大图 ---- */
+  /* ---- 背景音乐按钮 ---- */
+  .music-btn {
+    position: fixed;
+    top: 14px;
+    right: 14px;
+    z-index: 5;
+    width: 46px;
+    height: 46px;
+    border-radius: 50%;
+    border: none;
+    cursor: pointer;
+    background: rgba(255, 255, 255, 0.92);
+    box-shadow: 0 6px 18px rgba(255, 107, 157, 0.3);
+    font-size: 1.35rem;
+    line-height: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .music-btn.playing { animation: spin 4s linear infinite; }
+  .music-btn.no-music { opacity: 0.55; }
+  @keyframes spin {
+    from { transform: rotate(0); }
+    to   { transform: rotate(360deg); }
+  }
+
+  #lightbox {
+    position: fixed;
+    inset: 0;
+    z-index: 10;
+    background: rgba(40, 10, 25, 0.88);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+  }
+  #lightbox.show { opacity: 1; pointer-events: auto; }
+  #lightbox img {
+    max-width: 92vw;
+    max-height: 86vh;
+    border-radius: 12px;
+    box-shadow: 0 0 60px rgba(255, 107, 157, 0.4);
+  }
+
+  @media (max-width: 600px) {
+    .photo-wall { grid-template-columns: repeat(2, 1fr); gap: 10px; }
+    .photo:first-child { grid-column: 1 / -1; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    * { animation: none !important; transition: none !important; }
+  }
+</style>
+</head>
+<body>
+  <div id="stars"></div>
+
+  <button class="music-btn" id="musicBtn" title="播放背景音乐">💿</button>
+  <audio id="bgm" loop preload="auto"></audio>
+
+  <div class="wrap">
+    <header class="hero">
+      <h1><span class="heart-beat">💗</span> 我们的恋爱时光</h1>
+      <p class="since-line" id="sinceLine"></p>
+      <div class="countdown">
+        <div class="unit"><div class="num" id="d">0</div><span class="lab">天</span></div>
+        <div class="unit"><div class="num" id="h">0</div><span class="lab">时</span></div>
+        <div class="unit"><div class="num" id="m">0</div><span class="lab">分</span></div>
+        <div class="unit"><div class="num" id="s">0</div><span class="lab">秒</span></div>
+      </div>
+      <p class="count-note">在一起的每一秒，都值得纪念 ❤</p>
+    </header>
+
+    <section class="section">
+      <h2>📷 我们的合照</h2>
+      <div class="photo-wall" id="photoWall"></div>
+    </section>
+
+    <section class="section">
+      <h2>💌 写给你的情话</h2>
+      <div class="love-letter">
+        <p>烨子今年考研一志愿上岸。可对我来说，爱是每天醒来第一个想到你，是看到好吃的第一反应是带给你。世界很大，人很多，但我的目光，只落在你一个人身上。谢谢你来到我的生命里，让每一个平凡的日子都闪闪发光。往后的路还很长，我想牵着你的手，慢慢走完。遇到了你，我的生活变成了彩色。</p>
+        <p class="sign">—— 江宽</p>
+      </div>
+    </section>
+
+    <footer>❤ 遇见你，是我最大的幸运 ❤</footer>
+  </div>
+
+  <div id="lightbox"><img id="lightboxImg" alt="合照" /></div>
+
+  <script>
+    /* ==================== 在这里修改配置 ==================== */
+    // ← 把日期改成你们在一起的那天（格式：年-月-日）
+    const TOGETHER_DATE = new Date('2026-09-24T00:00:00');
+
+    // ← 把合照放到本文件旁边的 photos 文件夹里，或把下面改成图片链接
+    //    想加更多照片？继续加 'photos/4.jpg'、'photos/5.jpg' 就行
+    const PHOTOS = [
+      'photos/1.jpg',
+      'photos/2.jpg',
+      'photos/3.jpg',
+    ];
+
+    // ← 背景音乐：把《我们俩》mp3 文件放到本文件夹，命名为 music.mp3（本地优先）
+    //    也可以把 BGM_URL 改成在线 mp3 链接，本地文件不存在时会用它
+    const BGM_URL = '';
+    /* ======================================================== */
+
+    const $ = id => document.getElementById(id);
+    const pad = n => String(n).padStart(2, '0');
+
+    /* ---- 恋爱倒计时 ---- */
+    const sinceLine = $('sinceLine');
+    sinceLine.textContent = '始于 ' + TOGETHER_DATE.getFullYear() + ' 年 ' +
+      (TOGETHER_DATE.getMonth() + 1) + ' 月 ' + TOGETHER_DATE.getDate() + ' 日 · 爱你如初';
+
+    function tick() {
+      let diff = new Date() - TOGETHER_DATE;
+      if (diff < 0) diff = 0;
+      const days  = Math.floor(diff / 86400000);
+      const hours = Math.floor(diff % 86400000 / 3600000);
+      const mins  = Math.floor(diff % 3600000 / 60000);
+      const secs  = Math.floor(diff % 60000 / 1000);
+      $('d').textContent = days;
+      $('h').textContent = pad(hours);
+      $('m').textContent = pad(mins);
+      $('s').textContent = pad(secs);
+    }
+    tick();
+    setInterval(tick, 1000);
+
+    /* ---- 照片墙（没放照片时显示粉色爱心占位图） ---- */
+    const wall = $('photoWall');
+    const fallback = i => 'data:image/svg+xml;utf8,' + encodeURIComponent(
+      `<svg xmlns="http://www.w3.org/2000/svg" width="400" height="400">
+        <defs>
+          <linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0" stop-color="#ffd9e8"/>
+            <stop offset="1" stop-color="#ffb6cf"/>
+          </linearGradient>
+        </defs>
+        <rect width="400" height="400" fill="url(#g)"/>
+        <g transform="translate(80,40) scale(10)">
+          <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" fill="#ff6b9d" opacity="0.9"/>
+        </g>
+        <text x="200" y="330" font-size="22" fill="#d6407f" text-anchor="middle" font-family="sans-serif">照片 ${i}</text>
+      </svg>`);
+
+    PHOTOS.forEach((src, i) => {
+      const div = document.createElement('div');
+      div.className = 'photo';
+      const img = document.createElement('img');
+      img.src = src;
+      img.alt = '合照 ' + (i + 1);
+      img.loading = 'lazy';
+      img.addEventListener('error', () => { img.src = fallback(i + 1); });
+      div.appendChild(img);
+      wall.appendChild(div);
+    });
+
+    /* ---- 点击照片看大图（手机上没法悬停，点一下也能看） ---- */
+    const lightbox = $('lightbox');
+    const lightboxImg = $('lightboxImg');
+    wall.addEventListener('click', e => {
+      const img = e.target.closest('img');
+      if (!img) return;
+      lightboxImg.src = img.src;
+      lightbox.classList.add('show');
+    });
+    lightbox.addEventListener('click', () => lightbox.classList.remove('show'));
+
+    /* ---- 背景音乐 ---- */
+    const bgm = $('bgm');
+    const musicBtn = $('musicBtn');
+    bgm.src = 'music.mp3';
+    bgm.addEventListener('error', () => {
+      if (BGM_URL && bgm.src !== BGM_URL) {
+        bgm.src = BGM_URL; // 本地文件不存在，试试在线链接
+      } else {
+        musicBtn.title = '没有找到 music.mp3，请把歌曲放到本文件夹';
+        musicBtn.classList.add('no-music');
+      }
+    });
+
+    function startMusic() {
+      bgm.volume = 0.6;
+      bgm.play().then(() => musicBtn.classList.add('playing')).catch(() => {});
+    }
+    musicBtn.addEventListener('click', () => {
+      if (bgm.paused) startMusic();
+      else { bgm.pause(); musicBtn.classList.remove('playing'); }
+    });
+    // 手机浏览器会拦截自动播放：第一次点击页面任意位置时自动开始
+    document.addEventListener('pointerdown', function once(e) {
+      if (e.target === musicBtn) return; // 点的是按钮就交给按钮处理
+      document.removeEventListener('pointerdown', once);
+      if (bgm.paused) startMusic();
+    });
+
+    /* ---- 星星飘落 ---- */
+    const STAR_COUNT = 26; // 星星数量：改大更热闹，改小更安静
+    const starBox = $('stars');
+    for (let i = 0; i < STAR_COUNT; i++) {
+      const s = document.createElement('span');
+      s.className = 'star';
+      const size = 3 + Math.random() * 3;
+      s.style.width = s.style.height = size + 'px';
+      s.style.left = Math.random() * 100 + 'vw';
+      s.style.animationDuration = (16 + Math.random() * 18) + 's, ' + (1.5 + Math.random() * 2) + 's';
+      s.style.animationDelay = (-Math.random() * 34) + 's';
+      starBox.appendChild(s);
+    }
+  </script>
+</body>
+</html>
