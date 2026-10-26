@@ -108,12 +108,14 @@
 
   /* ---- 照片墙 ---- */
   .photo-wall {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
     gap: 14px;
     margin: 20px auto 0;
     max-width: 780px;
   }
+  .photo { width: calc((100% - 28px) / 3); }
   .photo {
     position: relative;
     background: #fff;
@@ -368,8 +370,9 @@
   body.no-scroll { overflow: hidden; }
 
   @media (max-width: 600px) {
-    .photo-wall { grid-template-columns: repeat(2, 1fr); gap: 10px; }
-    .photo:first-child { grid-column: 1 / -1; }
+    .photo-wall { gap: 10px; }
+    .photo { width: calc((100% - 10px) / 2); }
+    .photo:first-child { width: 100%; }
   }
   @media (prefers-reduced-motion: reduce) {
     * { animation: none !important; transition: none !important; }
@@ -444,11 +447,13 @@
     const TOGETHER_DATE = new Date('2026-09-24T00:00:00');
 
     // ← 把合照放到本文件旁边的 photos 文件夹里，或把下面改成图片链接
-    //    想加更多照片？继续加 'photos/4.jpg'、'photos/5.jpg' 就行
+    //    想加更多照片？继续加 'photos/6.jpg'、'photos/7.jpg' 就行
     const PHOTOS = [
       'photos/1.jpg',
       'photos/2.jpg',
       'photos/3.jpg',
+      'photos/4.jpg',
+      'photos/5.jpg',
     ];
 
     // ← 背景音乐：把《我们俩》mp3 文件放到本文件夹，命名为 music.mp3（本地优先）
@@ -457,12 +462,16 @@
 
     // ← 每张照片的配文（和 PHOTOS 顺序对应，点开大图时显示在下方）
     const CAPTIONS = [
+      '摸摸烨子头，万事不用愁。',
+      '可爱的烨子和不知情的丈夫',
       '手机拍的最正经的一张合照了',
       '希望下次手上拿的是戒指',
       '最喜欢这种生活中的小合照',
     ];
     // ← 每张照片的日期（显示在拍立得相片下方）
     const DATES = [
+      '2026.09.26',
+      '2026.09.26',
       '2026.09.29',
       '2026.09.29',
       '2026.09.28',
